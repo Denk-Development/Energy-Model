@@ -84,7 +84,7 @@ double KnightriderEffectHelper::transferFunction(double x)
   return x * x;
 }
 
-KnightriderEffectHelper knightriderEffect(numLEDs, 10);
+KnightriderEffectHelper a(numLEDs, 8), b(numLEDs, 8);
 
 void setup() 
 {
@@ -93,13 +93,14 @@ void setup()
   strip.begin();
   strip.show();
   
-  knightriderEffect.start(0, 40, true);
+  a.start(0, 50, true);
+  b.start(10, 50, true);
 }
 
 void loop() 
 {
   for (int i = 0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, strip.Color(0, 0, knightriderEffect.getLEDIntensity(i) * (double)255));
+    strip.setPixelColor(i, strip.Color(b.getLEDIntensity(i) * (double)255, 0, a.getLEDIntensity(i) * (double)255));
   }
   strip.show();
 }
