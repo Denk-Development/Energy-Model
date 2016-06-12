@@ -30,7 +30,7 @@ public:
   double getBrightness(int index) const;
 
   
-private:
+protected:
   const int numLEDs, effectLength;
   const Interpolation type;
   Direction direction = Direction::Forward;

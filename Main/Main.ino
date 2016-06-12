@@ -1,13 +1,21 @@
-#include <Adafruit_NeoPixel.h>
+#include "KnightriderStrip.cpp"
 
+#include <Adafruit_NeoPixel.h>
 #include "KnightriderEffect.h"
 
 #define DEBUG
 
 const int stripPin = 6, numLEDs = 25;
 
-Adafruit_NeoPixel strip(numLEDs, stripPin, NEO_GRB + NEO_KHZ800);
-KnightriderEffect stripEffect(numLEDs, Interpolation::Linear, 5);
+KnightriderStrip test(
+  numLEDs, 
+  stripPin, 
+  255, 255, 0, // color
+  NEO_GRB + NEO_KHZ800, 
+  Interpolation::Linear, 
+  5, // effect length
+  10, // head distance
+  80); // speed
 
 unsigned long startMillis;
 
@@ -17,21 +25,22 @@ void setup() {
     Serial.println("running...");
   #endif
 
-  stripEffect.setHeadDistance(10);
-  stripEffect.setSpeed(80);
-  
-  strip.begin();
-  stripEffect.start();
-  
-  startMillis = millis();
+  test.start();
 }
 
 void loop() {
-  if (startMillis + 10000 < millis()) {
-    stripEffect.setDirection(Direction::Backward);
+  if (startMillis + 10000 < millis() % 20000) {
+    test.setColor(255, 0, 0);
+    test.setDirection(Direction::Backward);
+    test.setMultiplier(1);
   }
-  for (int i = 0; i < numLEDs; i++) {
-    strip.setPixelColor(i, 0, 0, stripEffect.getBrightness(i) * 255);
+  if (startMillis + 4000 < millis() % 20000) {
+    test.setColor(255, 0, 255);
+    test.setMultiplier(.1);
   }
-  strip.show();
+  if (startMillis + 6000 < millis() % 20000) {
+    test.setColor(0, 0, 255);
+    test.setMultiplier(.5);
+  }
+  test.update();
 }
