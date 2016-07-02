@@ -30,7 +30,7 @@ void KnightriderEffect::setHeadDistance(int newHeadDistance)
 }
 
 double KnightriderEffect::getBrightness(int index) const {
-  double brightness = 0.0;
+  double brightness = 0.05; // low brightness level for LEDs which are not part of the "wave"
 
   if (!this->running) {
     return brightness;

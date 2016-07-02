@@ -7,14 +7,15 @@
 class KnightriderStrip : public KnightriderEffect
 {
 public:
-	KnightriderStrip(uint16_t n, uint8_t p, uint8_t r, uint8_t g, uint8_t b, neoPixelType t, Interpolation type, int effectLength, int headDistance, int speed)
-	: KnightriderEffect(n, type, effectLength), r(r), g(g), b(b)
+	KnightriderStrip(uint16_t n, uint8_t p, uint32_t rgb, neoPixelType t, Interpolation type, int effectLength, int headDistance, int speed)
+	: KnightriderEffect(n, type, effectLength)
 	{
 		this->strip = Adafruit_NeoPixel(n, p, t);
 		this->strip.begin();
 
 		this->setHeadDistance(headDistance);
 		this->setSpeed(speed);
+		this->setColor(rgb);
 	}
 
 	void update()
@@ -26,11 +27,11 @@ public:
 	  strip.show();
 	}
 
-	void setColor(uint8_t r, uint8_t g, uint8_t b)
+	void setColor(uint32_t c)
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
+		this->r = (uint8_t)(c >> 16);
+		this->g = (uint8_t)(c >>  8);
+		this->b = (uint8_t)c;
 		this->update();
 	}
 
